@@ -467,7 +467,7 @@ p {
 }
 
 .kitap-detay iframe {
-    width: 50%;
+    width: 100%;
     height: clamp(40vh, 50vh, 70vh); /* viewport-based height, scales with page size */
 }
 
