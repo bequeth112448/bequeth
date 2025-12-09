@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eserlerim - Lokman Batuhan KURTYEMEZ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    
+    <header>
+        <nav class="navigation">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.png" alt="Logo">
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <a href="index.html">Anasayfa</a>
+                <a href="benkimim.html">Ben Kimim ?</a>
+                <a href="eserler.html" class="aktif">Eserlerim</a>
+                <a href="iletisim.html">İletişim</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="eserlersayfasi">
+        <main class="eserlerwrapper anim-fade-up">
+            <div class="eserler-menu">
+                
+                <h3 class="kategori-baslik"><i class='bx bxs-book' ></i> KİTAPLARIM</h3>
+                
+                <div class="eser-link active" onclick="kitapGoster('ilahi')">
+                    <i class='bx  bx-bird'></i> 
+                    <span>İlahi Kuş</span>
+                </div>
+
+                <h3 class="kategori-baslik"><i class='bx  bx-git-repo-forked'></i> Sosyal Sorumluluk Projelerim</h3>
+                
+                <div class="eser-link" onclick="kitapGoster('proje1')">
+                    <i class='bx  bx-mosque'></i>
+                    <span>Allah Bize Yeter</span>
+                </div>
+
+                <div class="eser-link" onclick="kitapGoster('proje2')">
+                    <i class='bx bx-world'></i>
+                    <span>Siber Alem</span>
+                </div>
+
+
+
+            </div>
+        </main>
+
+        <main class="eserbilgileri anim-fade-up" style="--anim-delay:0.2s">
+            <div class="eserler-icerik">
+                
+                <div id="ilahi" class="kitap-detay anim-stagger" style="display: block; --anim-step:0.1s">
+                    <h5 class="anim-fade-up" style="--i:1"><i class='bx bx-bird'></i> İlahi Kuş Kitabının Özeti</h5>
+                    
+                    <p class="anim-fade-up" style="--i:2">
+                        İlahi Kuş adlı kitabı, Kutlu Yayınevi tarafından yayımlanmış bir farkındalık eseridir. Kitap, çağımızın en yaygın ve yıkıcı sorunlarından biri olan ekran bağımlılığını merkeze alarak, özellikle çocuklarda ve ebeveynlerde bu konuya yönelik bir uyanış çağrısı yapar.
+                    </p>
+
+                    <p class="ara-baslik anim-fade-up" style="--i:3"><strong>Ekran Bağımlılığının Tehlikeleri:</strong></p>
+                    <p class="anim-fade-up" style="--i:4">
+                        İnsanların ekranlarla geçirdiği zaman, ilişkilerden ve kendilerinden daha fazladır. Mutluluk sanal dünyada aranırken, bireylerin düşünme yetisi ve istekleri pazarlanan algılara göre şekillenir.
+                    </p>
+
+                    <p class="ara-baslik anim-fade-up" style="--i:5"><strong>Toplumsal ve Ailevi Etkiler:</strong></p>
+                    <p class="anim-fade-up" style="--i:6">
+                        Ekranlar aile yapılarını parçalar; saygı, şükür ve empati erozyona uğrar. Yazar, bu bağımlılığın maneviyatı yok ettiğini ve benlik bilincine yönelik büyük bir saldırı olduğunu savunur.
+                    </p>
+
+                    <p class="ara-baslik anim-fade-up" style="--i:7"><strong>Uyanış ve İlahi Amaç:</strong></p>
+                    <p class="anim-fade-up" style="--i:8">
+                        Kitap, okuyucuda "değerli bir hazine" olduğunu hatırlatır. Dünyaya sadece bugüne kadarki eylemler için gelinmediğini, fark edilmemiş yetenekler ve bir misyon olabileceğini sorgulatır.
+                    </p>
+
+                    <p class="ara-baslik anim-fade-up" style="--i:9"><strong>Sonuç ve Mesaj:</strong></p>
+                    <p class="anim-fade-up" style="--i:10">
+                        Yazar, okuyucuyu "uyanmaya" davet eder: "Uyan, çünkü uyanışın seni ve etrafındakileri dönüştürecek kadar güçlü." Bu eser, ekran esaretinden kurtulup ilahi bir perspektiften hayata bakmak için bir çağrıdır.
+                    </p>
+                </div>
+
+                <div id="proje1" class="kitap-detay anim-stagger" style="--anim-step:0.15s">
+                    <h5 class="anim-fade-up" style="--i:1"><i class='bx  bx-mosque'></i> Allah Bize Yeter</h5>
+                    <p class="anim-fade-up" style="--i:2"><strong>Gazze'de zulüm gören müslüman kardeşlerimiz için kaleme alınmıştır.</strong></p>
+                    <iframe class="anim-fade-up" style="--i:3" width=50% height=100% src="https://www.youtube.com/embed/Q5ASH4RfXBg?si=JM78KmjZCRVgoj6L" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+                <div id="proje2" class="kitap-detay anim-stagger" style="--anim-step:0.15s">
+                    <h5 class="anim-fade-up" style="--i:1"><i class='bx bx-world'></i> Siber Alem</h5>
+                    <iframe class="anim-fade-up" style="--i:2" width=50% height=100% src="https://www.youtube.com/embed/bKCuy10iJto?si=luhIMnhmbfhcADQ2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+
+    <div class="altbar">
+        <div class="iletisimadresleri">
+            <a href="https://www.youtube.com/@LokmanBatuhanKURTYEMEZ" target="_blank">
+                <i class='bx bxl-youtube'></i>
+            </a>
+            <a href="mailto:lokmanbatuhankurtyemez@gmail.com">
+                <i class='bx bx-mail-send'></i>
+            </a>
+            <a href="https://www.facebook.com.tr/lokmanbatuhankurtyemez" target="_blank">
+                <i class='bx bxl-facebook'></i>
+            </a>
+        </div>
+    </div>
+
+<script>
+        function kitapGoster(kitapId) {
+            var tumKitaplar = document.getElementsByClassName('kitap-detay');
+            for (var i = 0; i < tumKitaplar.length; i++) {
+                tumKitaplar[i].style.display = 'none';
+            }
+
+            document.getElementById(kitapId).style.display = 'block';
+
+            var tiklananLink = event.currentTarget;
+
+            var tumLinkler = document.getElementsByClassName('eser-link');
+            for (var i = 0; i < tumLinkler.length; i++) {
+                tumLinkler[i].classList.remove('active');
+            }
+
+            tiklananLink.classList.add('active');
+        }
+    </script>
+
+    <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
+
+</body>
+</html>
