@@ -1,0 +1,284 @@
+<?php
+$message_sent = false;
+$error_message = '';
+
+if (isset($_POST['submit']) && $_POST['submit'] != '') {
+    if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        // Form Data
+        $userName = $_POST['name'];
+        $userEmail = $_POST['email'];
+        $messageSubject = $_POST['subject'];
+        $messageBody = $_POST['message'];
+
+        // Recipient
+        $to = "m_ali_sezen@hotmail.com"; // Your email here
+        
+        // Email Body
+        $body = "";
+        $body .= "Gönderen: " . $userName . "\r\n";
+        $body .= "E-Posta: " . $userEmail . "\r\n";
+        $body .= "Mesaj: " . $messageBody . "\r\n";
+
+        // Headers
+        $headers = "From: " . $userEmail . "\r\n";
+        $headers .= "Reply-To: " . $userEmail . "\r\n";
+
+        // Send Email
+        // Note: This requires a mail server setup on the host
+        if (mail($to, $messageSubject, $body, $headers)) {
+            $message_sent = true;
+        } else {
+            $error_message = "Mesaj gönderilirken bir hata oluştu veya sunucu mail göndermeyi desteklemiyor.";
+        }
+    } else {
+        $error_message = "Lütfen geçerli bir e-posta adresi giriniz.";
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammet Ali SEZEN | Yazılım & Geliştirme</title>
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Font Awesome -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="assets/vendor/css/all.min.css">
+</head>
+
+<body>
+
+
+    <!-- Header Start -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <a href="#" class="logo-mark">MAS</a>
+                <div class="logo-text">
+                    <h1>Muhammet Ali SEZEN</h1>
+                    <p>Yazılım & Geliştirme</p>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link active">Ana Sayfa</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">Ben Kimim?</a></li>
+                <li class="nav-item"><a href="#resume" class="nav-link">Projelerim</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">İletişim</a></li>
+            </ul>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Hero Section Start -->
+    <section id="home">
+        <div id="particles-js"></div>
+        <div class="container hero-content">
+            <h1 class="reveal-text">MUHAMMET ALİ SEZEN</h1>
+            <p class="reveal-text">Ben <span class="typing-text"></span><span class="cursor">|</span></p>
+            <div class="social-icons">
+                <a href="mailto:m_ali_sezen@hotmail.com"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.instagram.com/alii.sezen" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <a href="#about"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+
+    <!-- About Section Start -->
+    <section id="about" class="section-padding">
+        <canvas id="code-rain"></canvas> <!-- Hacker Background -->
+        <div class="container">
+            <div class="section-title reveal-scroll">
+                <h2>Ben Kimim?</h2>
+                <p>Kısaca kendimden bahsedeyim.</p>
+            </div>
+            <div class="about-wrapper">
+                <div class="about-image reveal-scroll">
+                    <!-- Profile Image -->
+                    <img src="ali.png" alt="Muhammet Ali SEZEN">
+                </div>
+                <div class="about-content reveal-scroll">
+                    <h3>Merhaba, Ben <span>Muhammet Ali SEZEN</span></h3>
+                    <p>1997 yılının Mart ayında İzmir'de dünyaya gözlerimi açtım. İzmir'de doğdum ve büyüdüm. Eğitim
+                        hayatıma ilk Fevzipaşa İlköğretim okulunda başladım. Sonrasında ise sırasıyla Necip
+                        Fazıl Kısakürek Anadolu Lisesi ve son olarak Cumhuriyet Üniversitesi Mühendislik Fakültesi Çevre
+                        Mühendisliği olarak devam ettim.</p>
+                    <p>Programlama dünyasına C# dili ile giriş yaptım. Bununla birlikte HTML, CSS, JavaScript ile devam
+                        ediyorum.</p>
+
+                    <ul class="info-list">
+                        <li><span>Ad Soyad:</span> Muhammet Ali SEZEN</li>
+                        <li><span>Lokasyon:</span> İzmir, Türkiye</li>
+                        <li><span>E-Posta:</span> m_ali_sezen@hotmail.com</li>
+                    </ul>
+
+                    <div class="skills-section">
+                        <div class="skill-item">
+                            <h4>HTML5 & CSS3</h4>
+                            <div class="progress-bg">
+                                <div class="progress-bar" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <h4>C#</h4>
+                            <div class="progress-bg">
+                                <div class="progress-bar" data-width="80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <h4>JavaScript</h4>
+                            <div class="progress-bg">
+                                <div class="progress-bar" data-width="70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <a href="#resume"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+    <!-- About Section End -->
+
+    <!-- Resume Section Start (Renamed to Projects based on user content) -->
+    <section id="resume" class="section-padding">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Projelerim</h2>
+                <p>Geliştirdiğim bazı çalışmalar.</p>
+            </div>
+            <div class="timeline">
+                <!-- Item 1 -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">HTML</span>
+                        <h3>İlk Projem</h3>
+                        <h4>Kişisel Web Sitesi</h4>
+                        <p>
+                            <a href="https://lokmanbatuhankurtyemez.com"
+                                target="_blank">https://lokmanbatuhankurtyemez.com</a>
+                            websitesi tasarımı ilk
+                            tasarımım.
+                        </p>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">C#</span>
+                        <h3>C# Projesi</h3>
+                        <h4>Masaüstü/Backend</h4>
+                        <p>Bu projemde C# teknolojilerini kullanarak geliştirmeler yaptım.</p>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">C++</span>
+                        <h3>C++ Projesi</h3>
+                        <h4>Sistem Programlama</h4>
+                        <p>Bu projemde C++ ile algoritmik çözümler ürettim.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <a href="#contact"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+    <!-- Resume Section End -->
+
+    <!-- Contact Section Start -->
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>İletişim</h2>
+                <p>Bana ulaşın.</p>
+            </div>
+
+            <div class="contact-info" data-aos="fade-up">
+                <a href="mailto:m_ali_sezen@hotmail.com" class="contact-item">
+                    <h4><i class="fas fa-envelope"></i> E-Posta</h4>
+                    <p>m_ali_sezen@hotmail.com</p>
+                </a>
+                <a href="https://www.instagram.com/alii.sezen" target="_blank" class="contact-item">
+                    <h4><i class="fab fa-instagram"></i> Instagram</h4>
+                    <p>@alii.sezen</p>
+                </a>
+            </div>
+
+            <div class="contact-form" data-aos="fade-up">
+                <?php if ($message_sent): ?>
+                    <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+                        Mesajınız başarıyla gönderildi! Teşekkürler.
+                    </div>
+                <?php else: ?>
+                    <?php if ($error_message != ''): ?>
+                        <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+                            <?php echo $error_message; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="" method="POST">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" name="name" class="form-control" placeholder="Adınız Soyadınız" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control" placeholder="E-Posta Adresiniz" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="subject" class="form-control" placeholder="Konu" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" class="form-control" placeholder="Düşüncelerinizi, önerilerinizi veya sorularınızı buraya yazabilirsiniz..." required></textarea>
+                        </div>
+                        <input type="hidden" name="submit" value="1">
+                        <div class="text-center">
+                            <button type="submit" class="btn">Mesajı Gönder</button>
+                        </div>
+                    </form>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section End -->
+
+    <!-- Footer Start -->
+    <footer>
+        <div class="container">
+            <a href="#" class="footer-logo">MAS</a>
+            <div class="footer-social">
+                <a href="mailto:m_ali_sezen@hotmail.com"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.instagram.com/alii.sezen" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="copyright">&copy; 2026 Muhammet Ali SEZEN. Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Particles JS -->
+    <script src="assets/vendor/js/particles.min.js"></script>
+    <!-- GSAP -->
+    <script src="assets/vendor/js/gsap.min.js"></script>
+    <script src="assets/vendor/js/ScrollTrigger.min.js"></script>
+    <!-- Main JS -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
