@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Görev Takip - Bulut Yönetim Paneli</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Login Container -->
+  <div id="login-container" class="glass-panel">
+    <div class="login-header">
+      <i class="fa-solid fa-shield-halved logo-icon"></i>
+      <h2>Bulut Yönetici Girişi</h2>
+      <p>Görev ve cihaz yönetimi için şifrenizi girin</p>
+    </div>
+    <form id="login-form">
+      <div class="input-group">
+        <label for="password"><i class="fa-solid fa-lock"></i> Şifre</label>
+        <input type="password" id="password" required placeholder="Şifrenizi yazın...">
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">
+        Giriş Yap <i class="fa-solid fa-arrow-right-to-bracket"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Dashboard Container -->
+  <div id="dashboard-container" class="hidden">
+    <header class="app-header">
+      <div class="header-left">
+        <i class="fa-solid fa-cloud logo-icon-small"></i>
+        <div>
+          <h1>Stratejik Yönetim Şube Müdürlüğü</h1>
+          <p class="subtitle">Bulut Cihaz & Görev Senkronizasyon Paneli</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <button id="logout-btn" class="btn btn-danger">
+          Güvenli Çıkış <i class="fa-solid fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="dashboard-grid">
+      <!-- Left Column: Device Management -->
+      <section class="glass-panel col-device">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-mobile-screen-button"></i> Cihaz Yönetimi</h2>
+          <span id="device-count-badge" class="badge badge-indigo">0 Cihaz</span>
+        </div>
+        <p class="section-desc">Uygulamaya erişmek isteyen cihazları buradan onaylayabilir veya engelleyebilirsiniz.</p>
+        
+        <div id="devices-list" class="device-list-container">
+          <div class="loading-state">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Cihazlar yükleniyor...
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Task Management -->
+      <section class="glass-panel col-task">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-list-check"></i> Görev Yönetimi</h2>
+          <button id="new-task-btn" class="btn btn-success">
+            <i class="fa-solid fa-plus"></i> Yeni Görev Ekle
+          </button>
+        </div>
+
+        <div class="task-filters">
+          <button class="filter-btn active" data-filter="all">Hepsi (<span id="count-all">0</span>)</button>
+          <button class="filter-btn" data-filter="active">Yapılacak (<span id="count-active">0</span>)</button>
+          <button class="filter-btn" data-filter="completed">Tamamlanan (<span id="count-completed">0</span>)</button>
+        </div>
+
+        <div id="tasks-list" class="task-list-container">
+          <div class="loading-state">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Görevler yükleniyor...
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Task Modal (Create / Edit) -->
+  <div id="task-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <div class="modal-header">
+        <h3 id="modal-title">Yeni Görev Oluştur</h3>
+        <button id="modal-close-btn" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="task-id">
+        <input type="hidden" id="task-notification-id">
+        
+        <div class="input-group">
+          <label for="task-title">Görev Başlığı</label>
+          <input type="text" id="task-title" required placeholder="Görev adını girin...">
+        </div>
+
+        <div class="input-group">
+          <label for="task-desc">Açıklama</label>
+          <textarea id="task-desc" rows="3" placeholder="Görev detayları (isteğe bağlı)..."></textarea>
+        </div>
+
+        <div class="modal-form-row">
+          <div class="input-group">
+            <label for="task-date">Tarih & Saat</label>
+            <input type="datetime-local" id="task-date" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="task-priority">Öncelik</label>
+            <select id="task-priority">
+              <option value="low">Düşük</option>
+              <option value="medium" selected>Orta</option>
+              <option value="high">Yüksek</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="modal-cancel-btn" class="btn btn-secondary">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
