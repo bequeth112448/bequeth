@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Stratejik Yönetim Portal - Mobil</title>
+    
+    <!-- PWA / Mobil Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Stratejik Portal">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Google Fonts & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+
+    <!-- CSS Dosyası -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Arka Plan Dekorasyon Balonları -->
+    <div class="glass-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Mobil Ana Konteyner -->
+    <div class="mobile-container">
+        
+        <!-- ÜST BAŞLIK (SLIM HEADER) -->
+        <header class="mobile-header">
+            <div class="header-left">
+                <img src="polislogo.png" alt="Polis Logo" class="logo-img">
+                <div class="logo-text">
+                    <div class="police-strobe">
+                        <div class="strobe-bar">
+                            <span class="led red-led"></span>
+                            <span class="led blue-led"></span>
+                        </div>
+                    </div>
+                    <h1>Stratejik Yönetim</h1>
+                    <p>Mobil Portalı</p>
+                </div>
+            </div>
+            <div class="header-right" style="display: flex; gap: 8px;">
+                <button id="btn-theme-toggle" class="icon-btn" title="Tema Değiştir">
+                    <span class="material-symbols-outlined">dark_mode</span>
+                </button>
+                <button id="btn-settings-toggle" class="icon-btn" title="Uygulama Bilgi & Çevrimdışı Veri">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ANA İÇERİK ALANI -->
+        <main class="mobile-content">
+            
+            <!-- 1. ANASAYFA SEKME -->
+            <section id="tab-dashboard" class="tab-pane active">
+                <div class="section-title-wrap">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <h2>Kullanıcı Kontrol Paneli</h2>
+                </div>
+                
+                <!-- Profil Bilgi Çipi -->
+                <div class="glass-card profile-card">
+                    <div class="profile-header">
+                        <div class="profile-info">
+                            <h3 id="user-computer-name">Yükleniyor...</h3>
+                            <span id="user-role-badge" class="role-badge">Yetkisiz</span>
+                        </div>
+                        <div class="status-selector-wrapper">
+                            <button id="user-status-trigger" class="status-chip-btn">
+                                <span class="status-dot-indicator status-aktif" id="user-status-dot"></span>
+                                <span id="user-status-text">Aktif</span>
+                                <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İstatistik Çipleri Grid -->
+                <div class="stats-grid">
+                    <div class="glass-card stat-item">
+                        <span class="material-symbols-outlined stat-icon" style="color: #3b82f6;">groups</span>
+                        <div class="stat-info">
+                            <h4 id="stat-total-p">0</h4>
+                            <p>Toplam Üye</p>
+                        </div>
+                    </div>
+                    <div class="glass-card stat-item">
+                        <span class="material-symbols-outlined stat-icon" style="color: #ef4444;">pending_actions</span>
+                        <div class="stat-info">
+                            <h4 id="stat-pending-tasks">0</h4>
+                            <p>Bekleyen Görev</p>
+                        </div>
+                    </div>
+                    <div class="glass-card stat-item">
+                        <span class="material-symbols-outlined stat-icon" style="color: #10b981;">task_alt</span>
+                        <div class="stat-info">
+                            <h4 id="stat-done-tasks">0</h4>
+                            <p>Biten Görev</p>
+                        </div>
+                    </div>
+                    <div class="glass-card stat-item">
+                        <span class="material-symbols-outlined stat-icon" style="color: #f59e0b;">calendar_month</span>
+                        <div class="stat-info">
+                            <h4 id="stat-total-duties">0</h4>
+                            <p>Toplam Mesai</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hızlı Kısayollar -->
+                <div class="section-subtitle" style="margin-top:20px;">
+                    <span class="material-symbols-outlined">bolt</span>
+                    <h3>Hızlı İşlemler</h3>
+                </div>
+                <div class="quick-actions-grid">
+                    <button class="glass-card quick-action-card" onclick="App.switchTab('tab-personnel')">
+                        <span class="material-symbols-outlined action-icon" style="color: #3b82f6;">search</span>
+                        <span>Personel Ara</span>
+                    </button>
+                    <button class="glass-card quick-action-card" onclick="App.openAddTaskModal()">
+                        <span class="material-symbols-outlined action-icon" style="color: #ef4444;">add_task</span>
+                        <span>Yeni Görev Yaz</span>
+                    </button>
+                    <button class="glass-card quick-action-card" onclick="App.switchTab('tab-duty')">
+                        <span class="material-symbols-outlined action-icon" style="color: #f59e0b;">more_time</span>
+                        <span>Mesai Ekle</span>
+                    </button>
+                    <button class="glass-card quick-action-card" onclick="App.openSettingsModal()">
+                        <span class="material-symbols-outlined action-icon" style="color: #10b981;">cloud_sync</span>
+                        <span>Veri Yönetimi</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 2. GÖREVLER SEKME -->
+            <section id="tab-tasks" class="tab-pane">
+                <div class="section-title-wrap" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="material-symbols-outlined">task_alt</span>
+                        <h2>Görev Takip Panosu</h2>
+                    </div>
+                    <button class="icon-btn" onclick="App.openAddTaskModal()" title="Yeni Görev Ekle" style="background: rgba(220, 38, 38, 0.15); color: var(--accent-secondary); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: none;">
+                        <span class="material-symbols-outlined" style="font-size: 1.4rem;">add</span>
+                    </button>
+                </div>
+
+                <!-- Görev Durumu Seçim Menüsü (Mobil Segmented Control) -->
+                <div class="segmented-control">
+                    <button class="segment-btn active" data-status="todo">Yapılacak (<span id="task-count-todo">0</span>)</button>
+                    <button class="segment-btn" data-status="inprogress">İşlemde (<span id="task-count-inprogress">0</span>)</button>
+                    <button class="segment-btn" data-status="done">Yapıldı (<span id="task-count-done">0</span>)</button>
+                </div>
+
+                <!-- Görevler Listesi -->
+                <div class="tasks-mobile-list" id="tasks-container">
+                    <!-- Dinamik Doldurulacak -->
+                    <div class="loading-placeholder">Yükleniyor...</div>
+                </div>
+            </section>
+
+            <!-- 3. PERSONEL SORGULA SEKME -->
+            <section id="tab-personnel" class="tab-pane">
+                <div class="section-title-wrap">
+                    <span class="material-symbols-outlined">badge</span>
+                    <h2>Personel Sorgulama</h2>
+                </div>
+
+                <!-- Mobil Arama Kutusu -->
+                <div class="search-box-wrap">
+                    <span class="material-symbols-outlined search-icon">search</span>
+                    <input type="text" id="search-p-general" class="styled-input" placeholder="Ad, Sicil, Unvan arayın...">
+                    <button id="btn-clear-search" class="clear-search-btn" style="display: none;">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <!-- Personel Kartları -->
+                <div class="personnel-mobile-list" id="personnel-container">
+                    <!-- Dinamik Doldurulacak -->
+                    <div class="loading-placeholder">Lütfen sunucu adresini yapılandırın.</div>
+                </div>
+            </section>
+
+            <!-- 4. HAFTA SONU & GÖREV KAYDI SEKME -->
+            <section id="tab-duty" class="tab-pane">
+                <div class="section-title-wrap">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <h2>Hafta Sonu & Görev Kaydı</h2>
+                </div>
+
+                <!-- Kayıt Formu (Daraltılabilir Akordeon) -->
+                <details class="glass-card collapsible-card" open>
+                    <summary class="collapsible-header">
+                        <span class="header-title"><span class="material-symbols-outlined">edit_calendar</span> Yeni Kayıt Girişi</span>
+                        <span class="material-symbols-outlined toggle-icon">expand_more</span>
+                    </summary>
+                    <div class="collapsible-body">
+                        <div class="form-group">
+                            <label for="duty-form-personnel">Personel Seçin</label>
+                            <select id="duty-form-personnel" class="styled-input">
+                                <option value="">-- Personel Seçin --</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="duty-form-date">Tarih</label>
+                                <input type="date" id="duty-form-date" class="styled-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="duty-form-duration">Süre (Gün)</label>
+                                <input type="number" id="duty-form-duration" class="styled-input" value="1" min="1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="duty-form-type">Kayıt Türü</label>
+                            <select id="duty-form-type" class="styled-input">
+                                <option value="Mesai">Hafta Sonu Mesaisi</option>
+                                <option value="Görev">Dış Görev</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="duty-form-description">Açıklama / Görev Yeri</label>
+                            <input type="text" id="duty-form-description" class="styled-input" placeholder="Örn: Nöbetçi Ekipler Amiri / Kurs">
+                        </div>
+                        <button id="btn-save-duty" class="btn btn-primary btn-block">Kaydet</button>
+                    </div>
+                </details>
+
+                <!-- Kayıt Listesi -->
+                <div class="section-subtitle" style="margin-top:20px;">
+                    <span class="material-symbols-outlined">history</span>
+                    <h3>Kayıt Geçmişi (<span id="duty-stat-total">0</span>)</h3>
+                </div>
+                <div class="duty-mobile-list" id="duty-list-container">
+                    <!-- Dinamik Doldurulacak -->
+                </div>
+            </section>
+
+            <!-- 5. YÖNETİCİ SEKME -->
+            <section id="tab-admin" class="tab-pane">
+                <div class="section-title-wrap">
+                    <span class="material-symbols-outlined">admin_panel_settings</span>
+                    <h2>Yönetim Kontrol Paneli</h2>
+                </div>
+
+                <!-- Onay Bekleyenler -->
+                <div class="section-subtitle">
+                    <span class="material-symbols-outlined">person_add</span>
+                    <h3>Kullanıcı Onayları</h3>
+                </div>
+                <div class="glass-card list-card" id="admin-pending-list">
+                    <!-- Dinamik Doldurulacak -->
+                </div>
+
+                <!-- Güvenlik Logları -->
+                <div class="section-subtitle" style="margin-top:20px;">
+                    <span class="material-symbols-outlined">shield_heart</span>
+                    <h3>Sistem Güvenlik Logları</h3>
+                </div>
+                <div class="glass-card logs-card" id="admin-logs-list">
+                    <!-- Dinamik Doldurulacak -->
+                </div>
+            </section>
+        </main>
+
+        <!-- ALT NAVİGASYON BAR (BOTTOM NAV) -->
+        <nav class="bottom-nav">
+            <button class="bottom-nav-item active" data-tab="tab-dashboard">
+                <div class="nav-icon-wrapper">
+                    <span class="material-symbols-outlined">dashboard</span>
+                </div>
+                <span>Anasayfa</span>
+            </button>
+            <button class="bottom-nav-item" data-tab="tab-tasks">
+                <div class="nav-icon-wrapper">
+                    <span class="material-symbols-outlined">task_alt</span>
+                </div>
+                <span>Görevler</span>
+            </button>
+            <button class="bottom-nav-item" data-tab="tab-personnel">
+                <div class="nav-icon-wrapper">
+                    <span class="material-symbols-outlined">badge</span>
+                </div>
+                <span>Personel</span>
+            </button>
+            <button class="bottom-nav-item" data-tab="tab-duty">
+                <div class="nav-icon-wrapper">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                </div>
+                <span>Mesai</span>
+            </button>
+            <button class="bottom-nav-item" data-tab="tab-admin" id="bottom-nav-btn-admin" style="display: none;">
+                <div class="nav-icon-wrapper">
+                    <span class="material-symbols-outlined">admin_panel_settings</span>
+                </div>
+                <span>Yönetim</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- SUNUCU BAĞLANTI AYARLARI MODALI -->
+    <div id="settings-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>Bağlantı Ayarları</h3>
+                <button class="close-modal-btn icon-btn" id="btn-close-settings"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="setting-server-url">Python Sunucu Adresi</label>
+                    <input type="text" id="setting-server-url" class="styled-input" placeholder="http://192.168.1.100:8000">
+                    <p class="input-help">Yerel ağdaki Python sunucunuzun IP adresini ve port numarasını girin.</p>
+                </div>
+                <div class="connection-status text-center" id="setting-conn-status">
+                    Bağlantı testi yapılmadı.
+                </div>
+                <button id="btn-save-settings" class="btn btn-primary btn-block" style="margin-top:15px;">Bağlan ve Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DETAY GÖRÜNTÜLEME BOTTOM SHEET (MOBİL KART DETAYI) -->
+    <div id="bottom-sheet" class="bottom-sheet-overlay" style="display: none;">
+        <div class="bottom-sheet-content glass-card">
+            <div class="bottom-sheet-drag-handle"></div>
+            <div class="bottom-sheet-header">
+                <h3 id="bs-title">Detay Bilgisi</h3>
+                <button class="icon-btn" id="btn-close-sheet"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="bottom-sheet-body" id="bottom-sheet-body-content">
+                <!-- Dinamik doldurulacak -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ERİŞİM KİLİDİ (SUNUCU BAĞLANTISI YOKSA) -->
+    <div id="access-lock-overlay" class="lock-overlay" style="display: none;">
+        <div class="lock-content glass-card">
+            <span class="material-symbols-outlined lock-icon" id="lock-icon">power_off</span>
+            <h2 id="lock-title">Sunucu Bağlantısı Yok</h2>
+            <p id="lock-message">Uygulamayı yerel ağdaki sunucuya bağlamak için lütfen bağlantı ayarlarını yapılandırın.</p>
+            <button id="btn-lock-configure" class="btn btn-primary" style="margin-top: 15px;">Ayarları Yapılandır</button>
+        </div>
+    </div>
+
+    <!-- TOAST BİLDİRİM BARKİ -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- DURUM SEÇİM BOTTOM SHEET -->
+    <div id="status-sheet" class="bottom-sheet-overlay" style="display: none;">
+        <div class="bottom-sheet-content glass-card">
+            <div class="bottom-sheet-drag-handle"></div>
+            <div class="bottom-sheet-header">
+                <h3>Durumunuzu Güncelleyin</h3>
+                <button class="icon-btn" id="btn-close-status-sheet"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="bottom-sheet-body">
+                <div class="status-option-list">
+                    <button class="status-option-item selected" data-value="Aktif">
+                        <span class="status-dot-indicator status-aktif"></span>
+                        <span class="status-name">Aktif</span>
+                        <span class="status-emoji">🟢</span>
+                        <span class="material-symbols-outlined check-mark" style="display: none;">check</span>
+                    </button>
+                    <button class="status-option-item" data-value="Meşgul">
+                        <span class="status-dot-indicator status-mesgul"></span>
+                        <span class="status-name">Meşgul</span>
+                        <span class="status-emoji">🔴</span>
+                        <span class="material-symbols-outlined check-mark" style="display: none;">check</span>
+                    </button>
+                    <button class="status-option-item" data-value="Dış Görev">
+                        <span class="status-dot-indicator status-dis-gorev"></span>
+                        <span class="status-name">Dış Görev</span>
+                        <span class="status-emoji">🔵</span>
+                        <span class="material-symbols-outlined check-mark" style="display: none;">check</span>
+                    </button>
+                    <button class="status-option-item" data-value="İzinli">
+                        <span class="status-dot-indicator status-izinli"></span>
+                        <span class="status-name">İzinli</span>
+                        <span class="status-emoji">🟡</span>
+                        <span class="material-symbols-outlined check-mark" style="display: none;">check</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YENİ GÖREV EKLEME MODALI -->
+    <div id="task-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>Yeni Görev Ekle</h3>
+                <button class="close-modal-btn icon-btn" id="btn-close-task-modal"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="task-form-title">Görev Başlığı</label>
+                    <input type="text" id="task-form-title" class="styled-input" placeholder="Görev başlığını girin...">
+                </div>
+                <div class="form-group">
+                    <label for="task-form-desc">Açıklama</label>
+                    <textarea id="task-form-desc" class="styled-input" rows="3" placeholder="Görev detayları..." style="resize: none; font-family: inherit; font-size: 0.85rem; padding: 10px;"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-form-priority">Öncelik</label>
+                        <select id="task-form-priority" class="styled-input">
+                            <option value="Düşük">Düşük</option>
+                            <option value="Orta" selected>Orta</option>
+                            <option value="Yüksek">Yüksek</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-form-date">Bitiş Tarihi</label>
+                        <input type="date" id="task-form-date" class="styled-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-form-assignee">Atanan Personel</label>
+                    <select id="task-form-assignee" class="styled-input">
+                        <option value="Atanmamış">Atanmamış</option>
+                    </select>
+                </div>
+                <button id="btn-save-task" class="btn btn-primary btn-block" style="margin-top:15px;">Görevi Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÖZEL ONAY PENCERESİ (CONFIRM DIALOG) -->
+    <div id="custom-confirm-modal" class="confirm-dialog-overlay" style="display: none;">
+        <div class="confirm-dialog glass-card">
+            <span class="material-symbols-outlined confirm-icon" id="confirm-modal-icon">warning</span>
+            <h3 id="confirm-modal-title">Emin misiniz?</h3>
+            <p id="confirm-modal-message">Bu işlemi geri alamazsınız.</p>
+            <div class="confirm-dialog-actions">
+                <button id="btn-confirm-cancel" class="btn btn-secondary">İptal</button>
+                <button id="btn-confirm-ok" class="btn btn-danger">Evet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS ÇEVRİMDIŞI VERİ VE UYGULAMA DOSYALARI -->
+    <script src="js/offline_data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

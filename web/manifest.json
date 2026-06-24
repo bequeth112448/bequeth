@@ -1,0 +1,22 @@
+{
+  "name": "Stratejik Yönetim Şube Müdürlüğü",
+  "short_name": "Stratejik Portal",
+  "description": "Stratejik Yönetim Şube Müdürlüğü Kurumsal Yönetim Portalı",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

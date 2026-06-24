@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stratejik Yönetim Portal - Şube Müdürlüğü</title>
+    <meta name="description" content="Stratejik Yönetim Şube Müdürlüğü – Kurumsal görev takip, ekip yönetimi ve mesajlaşma portalı.">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Stratejik Portal">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Material Symbols (Ikon Kütüphanesi) -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    <!-- CSS Dosyası -->
+    <link rel="stylesheet" href="css/style.css?v=32">
+    <script src="config.js"></script>
+</head>
+<body>
+
+    <!-- ========== TAM EKRAN ŞİFRE GİRİŞ OVERLAY'İ ========== -->
+    <div id="page-auth-overlay" style="
+        position: fixed; inset: 0; z-index: 999999;
+        display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 40%, #1a1040 100%);
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    ">
+        <!-- Arka plan efektleri -->
+        <div style="position: absolute; inset: 0; overflow: hidden; pointer-events: none;">
+            <div style="position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%); top: -100px; left: -100px; border-radius: 50%; animation: authBlob1 8s ease-in-out infinite;"></div>
+            <div style="position: absolute; width: 350px; height: 350px; background: radial-gradient(circle, rgba(139,92,246,0.12), transparent 70%); bottom: -80px; right: -80px; border-radius: 50%; animation: authBlob2 10s ease-in-out infinite;"></div>
+            <div style="position: absolute; width: 250px; height: 250px; background: radial-gradient(circle, rgba(59,130,246,0.1), transparent 70%); top: 50%; left: 60%; border-radius: 50%; animation: authBlob1 12s ease-in-out infinite reverse;"></div>
+        </div>
+
+        <div id="page-auth-card" style="
+            position: relative; z-index: 2;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 420px; width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 80px rgba(99,102,241,0.08);
+            animation: authCardEntry 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        ">
+            <!-- Polis Logosu -->
+            <div style="margin-bottom: 20px;">
+                <img src="polislogo.png" alt="Polis Logo" style="width: 72px; height: 72px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);">
+            </div>
+
+            <!-- Çakar animasyonu -->
+            <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 16px;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: strobeRed 1.2s ease-in-out infinite;"></span>
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; animation: strobeBlue 1.2s ease-in-out infinite 0.6s;"></span>
+            </div>
+
+            <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 700; color: #f1f5f9; margin-bottom: 6px;">
+                Yönetici Paneli
+            </h2>
+            <p style="font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #94a3b8; margin-bottom: 30px; line-height: 1.5;">
+                Devam edebilmek için lütfen yönetici şifresini girin.
+            </p>
+
+            <form id="page-auth-form" style="display: flex; flex-direction: column; gap: 14px;">
+                <div style="position: relative;">
+                    <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #64748b;">lock</span>
+                    <input type="password" id="page-auth-password" placeholder="Şifre giriniz..." autocomplete="current-password" style="
+                        width: 100%; padding: 14px 16px 14px 44px;
+                        background: rgba(255,255,255,0.05);
+                        border: 1px solid rgba(255,255,255,0.1);
+                        border-radius: 12px;
+                        color: #f1f5f9; font-size: 0.95rem;
+                        font-family: 'Inter', sans-serif;
+                        outline: none;
+                        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                        box-sizing: border-box;
+                    " onfocus="this.style.borderColor='rgba(99,102,241,0.6)';this.style.boxShadow='0 0 20px rgba(99,102,241,0.15)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow='none'">
+                </div>
+                <button type="submit" style="
+                    padding: 14px 20px;
+                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    color: white; font-weight: 600;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.95rem;
+                    border: none; border-radius: 12px;
+                    cursor: pointer;
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                    box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+                " onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 25px rgba(99,102,241,0.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.3)'">
+                    <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-right: 6px;">verified_user</span>
+                    Doğrula ve Giriş Yap
+                </button>
+            </form>
+
+            <p id="page-auth-error" style="
+                font-size: 0.82rem; color: #f87171;
+                margin-top: 14px; display: none;
+                font-family: 'Inter', sans-serif;
+                animation: authShake 0.4s ease;
+            ">
+                <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">error</span>
+                Şifre hatalı! Lütfen tekrar deneyin.
+            </p>
+
+            <p style="font-size: 0.72rem; color: #475569; margin-top: 24px; font-family: 'Inter', sans-serif;">
+                <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle; margin-right: 3px;">shield</span>
+                Stratejik Yönetim Şube Müdürlüğü — Yetkili Erişim
+            </p>
+        </div>
+    </div>
+
+    <style>
+        @keyframes authCardEntry {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes authBlob1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, 30px) scale(1.15); }
+        }
+        @keyframes authBlob2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, -40px) scale(1.1); }
+        }
+        @keyframes strobeRed {
+            0%, 49% { opacity: 1; box-shadow: 0 0 8px #ef4444; }
+            50%, 100% { opacity: 0.2; box-shadow: none; }
+        }
+        @keyframes strobeBlue {
+            0%, 49% { opacity: 1; box-shadow: 0 0 8px #3b82f6; }
+            50%, 100% { opacity: 0.2; box-shadow: none; }
+        }
+        @keyframes authShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+    </style>
+
+    <script>
+    (function() {
+        const overlay = document.getElementById('page-auth-overlay');
+        const form = document.getElementById('page-auth-form');
+        const pwdInput = document.getElementById('page-auth-password');
+        const errorMsg = document.getElementById('page-auth-error');
+        const appContainer = document.querySelector('.app-container');
+        const bgBlobs = document.querySelector('.glass-bg-blobs');
+
+        // Sayfa yüklendiğinde app-container ve blobs gizli başlar
+        if (appContainer) appContainer.style.display = 'none';
+        if (bgBlobs) bgBlobs.style.display = 'none';
+
+        // Daha önce giriş yapılmışsa doğrudan aç
+        if (sessionStorage.getItem('page_auth_ok') === 'true') {
+            overlay.style.display = 'none';
+            if (appContainer) appContainer.style.display = '';
+            if (bgBlobs) bgBlobs.style.display = '';
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pwd = pwdInput.value.trim();
+            if (!pwd) return;
+
+            // CONFIG yüklendiyse oradan şifreyi al, yoksa varsayılan şifre
+            const correctPassword = (typeof CONFIG !== 'undefined' && CONFIG.ADMIN_PASSWORD)
+                ? CONFIG.ADMIN_PASSWORD
+                : 'admin123';
+
+            if (pwd === correctPassword) {
+                sessionStorage.setItem('page_auth_ok', 'true');
+                overlay.style.opacity = '0';
+                overlay.style.visibility = 'hidden';
+                setTimeout(function() {
+                    overlay.style.display = 'none';
+                    if (bgBlobs) bgBlobs.style.display = '';
+                    if (appContainer) {
+                        appContainer.style.display = '';
+                        appContainer.style.animation = 'authCardEntry 0.5s ease';
+                    }
+                }, 500);
+            } else {
+                errorMsg.style.display = 'block';
+                errorMsg.style.animation = 'none';
+                void errorMsg.offsetWidth; // reflow
+                errorMsg.style.animation = 'authShake 0.4s ease';
+                pwdInput.value = '';
+                pwdInput.focus();
+            }
+        });
+    })();
+    </script>
+    <!-- ========== ŞİFRE GİRİŞ OVERLAY SONU ========== -->
+
+    <!-- Arka Plan Dekorasyon Balonları (Premium Görünüm) -->
+    <div class="glass-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- ÜST PANEL (HEADER) -->
+        <header class="main-header">
+            <div class="header-logo">
+                <img src="/polislogo.png" alt="Polis Logo" class="logo-img">
+                <div class="logo-text">
+                    <!-- Profesyonel Polis Çakarı -->
+                    <div class="police-strobe">
+                        <div class="strobe-bar">
+                            <span class="led red-led"></span>
+                            <span class="led blue-led"></span>
+                        </div>
+                    </div>
+                    <h1>Stratejik Yönetim Şube Müdürlüğü</h1>
+                    <p>Stratejik Yönetim ve İç Kontrol Büro Amirliği</p>
+                </div>
+            </div>
+
+            <!-- Menü Sekmeleri -->
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-tab="tab-dashboard" id="tab-btn-dashboard">
+                    <span class="material-symbols-outlined">dashboard</span> Anasayfa
+                </button>
+                <button class="nav-tab" data-tab="tab-tasks" id="tab-btn-tasks">
+                    <span class="material-symbols-outlined">task_alt</span> Görevler
+                </button>
+                <button class="nav-tab" data-tab="tab-chat" id="tab-btn-chat" style="position: relative;">
+                    <span class="material-symbols-outlined">forum</span> Mesajlaşma
+                    <span id="nav-unread-badge" class="unread-badge" style="display: none;">0</span>
+                </button>
+                <button class="nav-tab" data-tab="tab-personnel" id="tab-btn-personnel" style="display: none;">
+                    <span class="material-symbols-outlined">badge</span> Personel Sorgu
+                </button>
+                <button class="nav-tab" data-tab="tab-duty" id="tab-btn-duty" style="display: none;">
+                    <span class="material-symbols-outlined">calendar_month</span> Hafta Sonu & Görev
+                </button>
+                <button class="nav-tab" data-tab="tab-admin" id="tab-btn-admin" style="display: none;">
+                    <span class="material-symbols-outlined">admin_panel_settings</span> Yönetici
+                    <span class="badge-count" id="admin-pending-badge" style="display: none;">0</span>
+                </button>
+            </nav>
+
+            <!-- Sağ Panel: Durum & Tema -->
+            <div class="header-actions">
+                <button id="btn-pwa-install" class="icon-btn" title="Uygulamayı Yükle" style="display: none; color: var(--accent-primary); background: rgba(99, 102, 241, 0.15); border-radius: 50%; width: 36px; height: 36px; align-items: center; justify-content: center; border: none; cursor: pointer; transition: all 0.2s ease;">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">install_mobile</span>
+                </button>
+                <button id="theme-toggle" class="icon-btn" title="Temayı Değiştir">
+                    <span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+                </button>
+                
+                <!-- Kullanıcı Profil Kartı -->
+                <div class="user-profile-badge" id="user-badge">
+                    <div class="user-info">
+                        <span class="user-name" id="user-computer-name">Çözümleniyor...</span>
+                        <span class="user-role" id="user-role-badge">Yetkisiz</span>
+                    </div>
+                    <!-- Kullanıcı Durum Seçici -->
+                    <div class="status-selector-wrapper">
+                        <select id="user-status-select" class="status-select">
+                            <option value="Aktif" data-icon="circle">🟢 Aktif</option>
+                            <option value="Meşgul" data-icon="circle">🔴 Meşgul</option>
+                            <option value="Dışarıda" data-icon="circle">🟡 Dışarıda</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ANA İÇERİK ALANI -->
+        <main class="main-content">
+            
+            <!-- 1. ANASAYFA SEKMESİ -->
+            <section id="tab-dashboard" class="tab-pane active">
+                <!-- Premium Animasyonlu Başlık (Slim Mod) -->
+                <div class="p-hero-header" style="padding: 20px 24px 16px; margin-bottom: 20px;">
+                    <div class="p-hero-bg"></div>
+                    <div class="p-hero-content" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                        <div class="p-hero-left" style="display: flex; align-items: center; gap: 14px;">
+                            <div class="p-hero-icon-wrap" style="width: 44px; height: 44px; border-radius: 10px; font-size: 22px;">
+                                <span class="material-symbols-outlined" style="font-size: 22px;">dashboard</span>
+                            </div>
+                            <div>
+                                <h2 class="p-hero-title" style="font-size: 1.25rem; margin-bottom: 2px;">Stratejik Yönetim Portalı</h2>
+                                <p class="p-hero-subtitle" style="font-size: 0.78rem; margin: 0;">Şube müdürlüğü verilerini, görev durumlarını ve anlık mesajları yönetebilirsiniz.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Ortada Canlı İstatistik Çipleri -->
+                        <div class="p-stats-row" style="margin-top: 0; display: flex; gap: 12px; z-index: 1; align-items: center;">
+                            <div class="p-stat-chip" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px;">
+                                <span class="material-symbols-outlined" style="font-size: 1.05rem;">groups</span>
+                                <span class="p-stat-value" id="online-users-count-badge" style="font-size: 0.95rem;">0</span>
+                                <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Aktif Üye</span>
+                            </div>
+                            <div class="p-stat-chip" style="padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px;">
+                                <span class="material-symbols-outlined" style="font-size: 1.05rem;">assignment_turned_in</span>
+                                <span class="p-stat-value" id="total-tasks-count-badge" style="font-size: 0.95rem;">0</span>
+                                <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Yapılacak Görev</span>
+                            </div>
+                        </div>
+
+                        <div class="p-hero-actions" style="margin: 0;">
+                            <div class="profile-info-compact" style="display: flex; align-items: center; gap: 10px; font-size: 0.82rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); padding: 6px 12px; border-radius: 8px;">
+                                <span class="material-symbols-outlined" style="color: var(--accent-primary); font-size: 18px;">account_circle</span>
+                                <span style="color: var(--text-secondary);">Bağlantı: <strong id="profile-computer-name" style="color: var(--text-primary);">-</strong> (<span id="profile-ip" style="color: var(--text-primary);">-</span>)</span>
+                                <span id="profile-role" class="badge-role" style="font-size: 0.65rem; padding: 1px 6px;">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 Hizalanmış Eşit Sütun -->
+                <div class="grid-layout cols-3 dashboard-grid">
+                    <!-- Sol Sütun: Aktif Ekip Üyeleri -->
+                    <div class="card glass-card dashboard-card">
+                        <div class="card-header">
+                            <h3><span class="material-symbols-outlined header-icon">group</span> Aktif Ekip Üyeleri</h3>
+                        </div>
+                        <div class="card-body scrollable-y" id="online-users-list">
+                            <!-- JS ile doldurulacak -->
+                            <div class="loading-spinner-container"><div class="spinner"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Orta Sütun: Süresi Gelen Görevler -->
+                    <div class="card glass-card dashboard-card">
+                        <div class="card-header">
+                            <h3><span class="material-symbols-outlined header-icon">notification_important</span> Süresi Gelen Görevler</h3>
+                        </div>
+                        <div class="card-body scrollable-y" id="dashboard-recent-tasks">
+                            <!-- JS ile doldurulacak (Öncelikli aktif görevler) -->
+                            <div class="loading-spinner-container"><div class="spinner"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Sağ Sütun: Hızlı Sohbet -->
+                    <div class="card glass-card dashboard-card">
+                        <div class="card-header">
+                            <h3><span class="material-symbols-outlined header-icon">chat</span> Hızlı Sohbet</h3>
+                        </div>
+                        <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 15px 20px;">
+                            <div class="dashboard-chat-box scrollable-y" id="dashboard-chat-box">
+                                <!-- Son chat mesajları -->
+                            </div>
+                            <div class="quick-chat-input-wrapper">
+                                <input type="text" id="quick-chat-input" placeholder="Bir mesaj yazın..." class="styled-input" />
+                                <button id="quick-chat-send-btn" class="btn btn-icon btn-primary">
+                                    <span class="material-symbols-outlined">send</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. GÖREVLER SEKMESİ (KANBAN) -->
+            <section id="tab-tasks" class="tab-pane">
+                <!-- Premium Animasyonlu Başlık (Slim Mod) -->
+                <div class="p-hero-header" style="padding: 20px 24px 16px; margin-bottom: 20px;">
+                    <div class="p-hero-bg"></div>
+                    <div class="p-hero-content" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                        <div class="p-hero-left" style="display: flex; align-items: center; gap: 14px;">
+                            <div class="p-hero-icon-wrap" style="width: 44px; height: 44px; border-radius: 10px; font-size: 22px;">
+                                <span class="material-symbols-outlined" style="font-size: 22px;">assignment</span>
+                            </div>
+                            <div>
+                                <h2 class="p-hero-title" style="font-size: 1.25rem; margin-bottom: 2px;">Grup Görev Takip Panosu</h2>
+                                <p class="p-hero-subtitle" style="font-size: 0.78rem; margin: 0;">Ortak görev durumlarını sürükle-bırak yöntemiyle güncelleyebilirsiniz.</p>
+                            </div>
+                        </div>
+                        <div class="p-hero-actions" style="margin: 0; display: flex; gap: 8px;">
+                            <button id="btn-toggle-edit-mode" class="btn btn-secondary p-hero-btn" style="padding: 6px 12px; font-size: 0.8rem; height: 36px; display: flex; align-items: center; gap: 6px;" title="Düzenleme Modunu Aç/Kapat">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">edit</span> Düzenle
+                            </button>
+                            <button id="btn-create-task" class="btn btn-primary p-hero-btn" style="padding: 6px 12px; font-size: 0.8rem; height: 36px; display: flex; align-items: center; gap: 6px;">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">add_task</span> Yeni Görev Ekle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Görev Arama & Filtreleme Çubuğu -->
+                <div class="p-filter-bar" style="margin-top: 15px; margin-bottom: 20px;">
+                    <div class="p-filter-search">
+                        <span class="material-symbols-outlined p-filter-search-icon">search</span>
+                        <input type="text" id="search-t-general" placeholder="Görev adı, atanan, EBYS no, oluşturan ile arayın..." class="p-filter-input" />
+                    </div>
+                    <div class="p-filter-selects">
+                        <button id="btn-clear-t-filters" class="p-filter-clear-btn" title="Filtreleri Temizle">
+                            <span class="material-symbols-outlined">filter_alt_off</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kanban Panosu Grid Yapısı -->
+                <div class="kanban-board">
+                    <!-- 1. Yapılacaklar -->
+                    <div class="kanban-column" id="col-todo" data-status="todo">
+                        <div class="column-header">
+                            <span class="column-title">📌 YAPILACAKLAR</span>
+                            <span class="column-count" id="count-todo">0</span>
+                        </div>
+                        <div class="kanban-cards scrollable-y" id="cards-todo">
+                            <!-- Görev Kartları -->
+                        </div>
+                    </div>
+                    <!-- 2. Yapılıyor -->
+                    <div class="kanban-column" id="col-in_progress" data-status="in_progress">
+                        <div class="column-header">
+                            <span class="column-title">⚡ YAPILIYOR</span>
+                            <span class="column-count" id="count-in_progress">0</span>
+                        </div>
+                        <div class="kanban-cards scrollable-y" id="cards-in_progress">
+                            <!-- Görev Kartları -->
+                        </div>
+                    </div>
+                    <!-- 3. Tamamlananlar -->
+                    <div class="kanban-column" id="col-done" data-status="done">
+                        <div class="column-header">
+                            <span class="column-title">✅ TAMAMLANANLAR</span>
+                            <span class="column-count" id="count-done">0</span>
+                        </div>
+                        <div class="kanban-cards scrollable-y" id="cards-done">
+                            <!-- Görev Kartları -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. MESAJLAŞMA SEKMESİ -->
+            <section id="tab-chat" class="tab-pane">
+                <!-- Premium Animasyonlu Başlık (Slim Mod) -->
+                <div class="p-hero-header" style="padding: 20px 24px 16px; margin-bottom: 20px;">
+                    <div class="p-hero-bg"></div>
+                    <div class="p-hero-content" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                        <div class="p-hero-left" style="display: flex; align-items: center; gap: 14px;">
+                            <div class="p-hero-icon-wrap" style="width: 44px; height: 44px; border-radius: 10px; font-size: 22px;">
+                                <span class="material-symbols-outlined" style="font-size: 22px;">forum</span>
+                            </div>
+                            <div>
+                                <h2 class="p-hero-title" style="font-size: 1.25rem; margin-bottom: 2px;">Sohbet & Mesajlaşma Odası</h2>
+                                <p class="p-hero-subtitle" style="font-size: 0.78rem; margin: 0;">Ekip üyeleri ile anlık mesajlaşabilir ve genel kanaldan duyuru yapabilirsiniz.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-wrapper grid-layout cols-4">
+                    <!-- Sol Menü: Kullanıcı Listesi -->
+                    <div class="card glass-card span-1 chat-users-sidebar">
+                        <div class="card-header">
+                            <h3><span class="material-symbols-outlined header-icon">people</span> Ekip Üyeleri</h3>
+                        </div>
+                        <div class="card-body scrollable-y" id="chat-users-list">
+                            <!-- Çevrimiçi/Çevrimdışı Kullanıcılar -->
+                        </div>
+                    </div>
+                    
+                    <!-- Sağ Menü: Sohbet Kutusu -->
+                    <div class="card glass-card span-3 chat-messages-container">
+                        <div class="card-header chat-room-header" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="chat-room-info" style="display:flex; align-items:center; gap:12px;">
+                                <button id="chat-mobile-back-btn" class="chat-mobile-back-btn" onclick="document.querySelector('.chat-wrapper').classList.remove('show-messages-mobile')" style="display:none; background:none; border:none; color:var(--text-primary); cursor:pointer; align-items:center; margin-right:4px;">
+                                    <span class="material-symbols-outlined">arrow_back</span>
+                                </button>
+                                <div id="chat-room-avatar-wrap" style="width: 38px; height: 38px; flex-shrink: 0; position: relative;">
+                                    <div id="chat-room-avatar-fallback" style="width:38px; height:38px; border-radius:50%; background:rgba(220,38,38,0.1); border:1.5px solid var(--accent-primary); display:flex; align-items:center; justify-content:center;">
+                                        <span class="material-symbols-outlined" id="chat-room-icon" style="color:var(--accent-primary); font-size:20px;">chat_bubble</span>
+                                    </div>
+                                    <img id="chat-room-avatar-img" src="" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid var(--accent-primary); display:none;">
+                                </div>
+                                <div style="display:flex; flex-direction:column;">
+                                    <h3 style="margin:0; font-size:1.05rem; display:flex; align-items:center; gap:6px;"><span id="chat-room-title" style="font-weight:700; color:var(--text-primary);">Genel Sohbet Kanalı</span></h3>
+                                    <p id="chat-room-desc" style="margin:2px 0 0 0; font-size:0.75rem; color:var(--text-secondary);">Şube içi ortak mesajlaşma alanı</p>
+                                </div>
+                            </div>
+                            <div class="chat-search-wrapper">
+                                <input type="text" id="chat-message-search" placeholder="Mesajlarda ara..." class="styled-input input-sm" />
+                            </div>
+                        </div>
+                        <div class="chat-messages-body scrollable-y" id="chat-messages-body">
+                            <!-- Sohbet mesajları -->
+                        </div>
+                        <div class="chat-messages-footer">
+                            <div class="chat-input-row">
+                                <input type="text" id="chat-message-input" placeholder="Bir şeyler yazın..." class="styled-input" />
+                                <button id="chat-message-send-btn" class="btn btn-primary">
+                                    Gönder <span class="material-symbols-outlined">send</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. PERSONEL SORGU SEKMESİ -->
+            <section id="tab-personnel" class="tab-pane">
+                <div id="personnel-authorized-view">
+                    <!-- Premium Animasyonlu Başlık -->
+                    <!-- Premium Animasyonlu Başlık (Slim Mod) -->
+                    <div class="p-hero-header" style="padding: 20px 24px 16px; margin-bottom: 20px;">
+                        <div class="p-hero-bg"></div>
+                        <div class="p-hero-content" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                            <div class="p-hero-left" style="display: flex; align-items: center; gap: 14px;">
+                                <div class="p-hero-icon-wrap" style="width: 44px; height: 44px; border-radius: 10px; font-size: 22px;">
+                                    <span class="material-symbols-outlined" style="font-size: 22px;">badge</span>
+                                </div>
+                                <div>
+                                    <h2 class="p-hero-title" style="font-size: 1.25rem; margin-bottom: 2px;">Personel Sorgu Paneli</h2>
+                                    <p class="p-hero-subtitle" style="font-size: 0.78rem; margin: 0;">Tüm şube personelini arayabilir, detaylarını inceleyebilirsiniz.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Ortada Canlı İstatistik Çipleri -->
+                            <div class="p-stats-row" style="margin-top: 0; display: flex; gap: 8px; z-index: 1; align-items: center; flex-wrap: nowrap;">
+                                <div class="p-stat-chip" style="padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px; white-space: nowrap;">
+                                    <span class="material-symbols-outlined" style="font-size: 1rem;">groups</span>
+                                    <span class="p-stat-value" id="p-stat-total" style="font-size: 0.95rem;">0</span>
+                                    <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Toplam</span>
+                                </div>
+                                <div class="p-stat-chip" style="padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px; white-space: nowrap;">
+                                    <span class="material-symbols-outlined" style="font-size: 1rem;">apartment</span>
+                                    <span class="p-stat-value" id="p-stat-dept" style="font-size: 0.95rem;">0</span>
+                                    <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Birim</span>
+                                </div>
+                                <div class="p-stat-chip" style="padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px; white-space: nowrap;">
+                                    <span class="material-symbols-outlined" style="font-size: 1rem;">military_tech</span>
+                                    <span class="p-stat-value" id="p-stat-rank" style="font-size: 0.95rem;">0</span>
+                                    <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Rütbe</span>
+                                </div>
+                                <div class="p-stat-chip" style="padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px; white-space: nowrap;">
+                                    <span class="material-symbols-outlined" style="font-size: 1rem;">filter_list</span>
+                                    <span class="p-stat-value" id="p-stat-filtered" style="font-size: 0.95rem;">0</span>
+                                    <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Gösterilen</span>
+                                </div>
+                            </div>
+
+                            <div class="p-hero-actions" style="margin: 0; display: flex; gap: 8px;">
+                                <button id="btn-export-personnel" class="btn btn-secondary p-hero-btn" style="padding: 6px 12px; font-size: 0.8rem; height: 36px; display: flex; align-items: center; gap: 6px;">
+                                    <span class="material-symbols-outlined" style="font-size: 18px;">download</span> Excel/CSV
+                                </button>
+                                <button id="btn-create-personnel" class="btn btn-primary p-hero-btn only-editor-admin" style="display: none; padding: 6px 12px; font-size: 0.8rem; height: 36px; align-items: center; gap: 6px;">
+                                    <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span> Yeni
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Premium Arama & Filtreleme Çubuğu -->
+                    <div class="p-filter-bar">
+                        <div class="p-filter-search">
+                            <span class="material-symbols-outlined p-filter-search-icon">search</span>
+                            <input type="text" id="search-p-general" placeholder="Ad, Sicil, Unvan, T.C., E-Posta ile arayın..." class="p-filter-input" />
+                        </div>
+                        <div class="p-filter-selects">
+                            <div class="p-filter-select-wrap">
+                                <span class="material-symbols-outlined">apartment</span>
+                                <select id="search-p-dept" class="p-filter-select">
+                                    <option value="">Tüm Birimler</option>
+                                </select>
+                                <span class="material-symbols-outlined select-arrow">expand_more</span>
+                            </div>
+                            <div class="p-filter-select-wrap">
+                                <span class="material-symbols-outlined">military_tech</span>
+                                <select id="search-p-rank" class="p-filter-select">
+                                    <option value="">Tüm Rütbeler</option>
+                                </select>
+                                <span class="material-symbols-outlined select-arrow">expand_more</span>
+                            </div>
+                            <button id="btn-clear-p-filters" class="p-filter-clear-btn" title="Filtreleri Temizle">
+                                <span class="material-symbols-outlined">filter_alt_off</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Personel Grid Görünümü -->
+                    <div class="personnel-grid-container" id="personnel-cards-container">
+                        <!-- JS ile doldurulacak -->
+                    </div>
+
+                    <!-- Premium Pagination -->
+                    <div class="p-pagination-wrapper" id="personnel-pagination">
+                        <!-- JS ile doldurulacak -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- HAFTA SONU & GÖREV KAYDI SEKMESİ -->
+            <section id="tab-duty" class="tab-pane">
+                <!-- Premium Animasyonlu Başlık -->
+                <div class="p-hero-header" style="padding: 20px 24px 16px; margin-bottom: 20px;">
+                    <div class="p-hero-bg"></div>
+                    <div class="p-hero-content" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                        <div class="p-hero-left" style="display: flex; align-items: center; gap: 14px;">
+                            <div class="p-hero-icon-wrap" style="width: 44px; height: 44px; border-radius: 10px; font-size: 22px; background: linear-gradient(135deg, var(--accent-primary), #4f46e5);">
+                                <span class="material-symbols-outlined" style="font-size: 22px;">calendar_month</span>
+                            </div>
+                            <div>
+                                <h2 class="p-hero-title" style="font-size: 1.25rem; margin-bottom: 2px;">Hafta Sonu & Görev Kaydı</h2>
+                                <p class="p-hero-subtitle" style="font-size: 0.78rem; margin: 0;">Personel mesailerini ve dış görev kayıtlarını girin, arayın ve raporlayın.</p>
+                            </div>
+                        </div>
+
+                        <!-- Canlı İstatistik Çipleri -->
+                        <div class="p-stats-row" style="margin-top: 0; display: flex; gap: 8px; z-index: 1; align-items: center; flex-wrap: nowrap;">
+                            <div class="p-stat-chip" style="padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px; white-space: nowrap;">
+                                <span class="material-symbols-outlined" style="font-size: 1rem; color: var(--accent-primary);">fact_check</span>
+                                <span class="p-stat-value" id="duty-stat-total" style="font-size: 0.95rem;">0</span>
+                                <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Toplam Kayıt</span>
+                            </div>
+                            <div class="p-stat-chip" style="padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px; white-space: nowrap;">
+                                <span class="material-symbols-outlined" style="font-size: 1rem; color: #10b981;">weekend</span>
+                                <span class="p-stat-value" id="duty-stat-weekend" style="font-size: 0.95rem;">0</span>
+                                <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Mesai (Gün)</span>
+                            </div>
+                            <div class="p-stat-chip" style="padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; gap: 6px; height: 36px; white-space: nowrap;">
+                                <span class="material-symbols-outlined" style="font-size: 1rem; color: #3b82f6;">flight_takeoff</span>
+                                <span class="p-stat-value" id="duty-stat-duty" style="font-size: 0.95rem;">0</span>
+                                <span class="p-stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">Görev (Gün)</span>
+                            </div>
+                        </div>
+
+                        <div class="p-hero-actions" style="margin: 0; display: flex; gap: 8px;">
+                            <button id="btn-export-duty" class="btn btn-secondary p-hero-btn" style="padding: 6px 12px; font-size: 0.8rem; height: 36px; display: flex; align-items: center; gap: 6px;">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">download</span> Excel/CSV Dışa Aktar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-layout cols-3">
+                    <!-- Sol Sütun: Kayıt Formu & Sıralama -->
+                    <div class="card glass-card" style="grid-column: span 1;">
+                        <div class="card-header">
+                            <h3><span class="material-symbols-outlined header-icon">add_task</span> Yeni Kayıt Ekle</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="duty-record-form" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label for="duty-form-personnel">Personel Seçin</label>
+                                    <select id="duty-form-personnel" class="styled-input" required>
+                                        <option value="">-- Personel Seçin --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duty-form-date">Tarih</label>
+                                    <input type="date" id="duty-form-date" class="styled-input" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="duty-form-type">Kayıt Türü</label>
+                                    <select id="duty-form-type" class="styled-input" required>
+                                        <option value="weekend_shift">Hafta Sonu Mesaisi</option>
+                                        <option value="external_duty">Dış Görev</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duty-form-duration">Süre (Gün)</label>
+                                    <input type="number" id="duty-form-duration" class="styled-input" min="1" max="90" value="1" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="duty-form-description">Görev / Mesai Açıklaması</label>
+                                    <input type="text" id="duty-form-description" class="styled-input" placeholder="Açıklama veya yer girin..." maxlength="200" />
+                                </div>
+                                <button type="submit" id="btn-save-duty" class="btn btn-primary btn-full" style="margin-top: 10px;">
+                                    <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 6px; vertical-align: middle;">save</span>Kaydet ve Ekle
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Sıralamalar (Kimin en çok geldiği) -->
+                    <div class="card glass-card" style="grid-column: span 2;">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3><span class="material-symbols-outlined header-icon">leaderboard</span> En Çok Mesai & Göreve Giden Personel</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="grid-layout cols-2" style="gap: 20px;">
+                                <div>
+                                    <h4 style="font-size: 0.85rem; font-weight: 700; color: #10b981; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                                        <span class="material-symbols-outlined" style="font-size: 18px;">weekend</span> HAFTA SONU MESAİSİ (TOP 5)
+                                    </h4>
+                                    <div class="status-summary-list" id="duty-ranking-weekend" style="min-height: 150px;">
+                                        <div style="text-align: center; opacity: 0.5; padding-top: 30px;">Kayıt bulunmuyor.</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 0.85rem; font-weight: 700; color: #3b82f6; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                                        <span class="material-symbols-outlined" style="font-size: 18px;">flight_takeoff</span> DIŞ GÖREV (TOP 5)
+                                    </h4>
+                                    <div class="status-summary-list" id="duty-ranking-duty" style="min-height: 150px;">
+                                        <div style="text-align: center; opacity: 0.5; padding-top: 30px;">Kayıt bulunmuyor.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kayıt Filtreleme & Tablo Listesi -->
+                <div class="card glass-card" style="margin-top: 20px;">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                        <h3><span class="material-symbols-outlined header-icon">list_alt</span> Kayıtlı Nöbet ve Görev Geçmişi</h3>
+                        
+                        <!-- Filtreleme Kontrolleri -->
+                        <div class="duty-filter-row" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                            <input type="text" id="duty-filter-search" class="styled-input" placeholder="Personel adıyla ara..." style="max-width: 200px; padding: 6px 10px;" />
+                            <select id="duty-filter-type" class="styled-input" style="max-width: 160px; padding: 6px 10px;">
+                                <option value="">Tüm Kayıtlar</option>
+                                <option value="weekend_shift">Sadece Hafta Sonu</option>
+                                <option value="external_duty">Sadece Dış Görev</option>
+                            </select>
+                            <input type="date" id="duty-filter-start-date" class="styled-input" style="max-width: 140px; padding: 6px 10px;" title="Başlangıç Tarihi" />
+                            <input type="date" id="duty-filter-end-date" class="styled-input" style="max-width: 140px; padding: 6px 10px;" title="Bitiş Tarihi" />
+                            <button id="btn-clear-duty-filters" class="btn btn-secondary" style="padding: 6px 10px; height: 34px;" title="Filtreleri Temizle">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">filter_alt_off</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body scrollable-x" style="padding: 0;">
+                        <table class="duty-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="padding: 12px 16px; text-align: left;">Personel (Sicil)</th>
+                                    <th style="padding: 12px 16px; text-align: left;">Tarih</th>
+                                    <th style="padding: 12px 16px; text-align: left;">Tür</th>
+                                    <th style="padding: 12px 16px; text-align: left;">Süre (Gün)</th>
+                                    <th style="padding: 12px 16px; text-align: left;">Açıklama / Yer</th>
+                                    <th style="padding: 12px 16px; text-align: left;">Ekleyen</th>
+                                    <th style="padding: 12px 16px; text-align: center; width: 80px;">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="duty-records-table-body">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 30px; opacity: 0.5;">Kayıt bulunmuyor.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. YÖNETİCİ SEKMESİ -->
+            <section id="tab-admin" class="tab-pane">
+                <!-- Giriş Ekranı -->
+                <div id="admin-login-view" class="card glass-card login-card text-center">
+                    <span class="material-symbols-outlined auth-icon">admin_panel_settings</span>
+                    <h2>Yönetici Kimlik Doğrulama</h2>
+                    <p>Yönetici işlemlerine devam edebilmek için lütfen şifreyi girin.</p>
+                    <div class="login-form">
+                        <input type="password" id="admin-password-input" placeholder="Yönetici Şifresi..." class="styled-input" />
+                        <button id="admin-login-btn" class="btn btn-primary btn-full">Doğrula ve Giriş Yap</button>
+                    </div>
+                </div>
+
+                <!-- Yönetici Arayüzü (Gizli başlar) -->
+                <div id="admin-dashboard-view" style="display: none;">
+                    <!-- Premium Animasyonlu Başlık (Slim Mod) -->
+                    <div class="p-hero-header" style="padding: 20px 24px 16px; margin-bottom: 20px;">
+                        <div class="p-hero-bg"></div>
+                        <div class="p-hero-content" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                            <div class="p-hero-left" style="display: flex; align-items: center; gap: 14px;">
+                                <div class="p-hero-icon-wrap" style="width: 44px; height: 44px; border-radius: 10px; font-size: 22px;">
+                                    <span class="material-symbols-outlined" style="font-size: 22px;">admin_panel_settings</span>
+                                </div>
+                                <div>
+                                    <h2 class="p-hero-title" style="font-size: 1.25rem; margin-bottom: 2px;">Yönetim Kontrol Paneli</h2>
+                                    <p class="p-hero-subtitle" style="font-size: 0.78rem; margin: 0;">Kullanıcı yetkilerini yönetebilir ve veritabanı ayarlarını yapılandırabilirsiniz.</p>
+                                </div>
+                            </div>
+                            <div class="p-hero-actions" style="margin: 0; display: flex; gap: 8px;">
+                                <button id="admin-logout-btn" class="btn btn-secondary p-hero-btn" style="padding: 6px 12px; font-size: 0.8rem; height: 36px; display: flex; align-items: center; gap: 6px;">
+                                    Güvenli Çıkış <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-layout cols-3">
+                        <!-- Kullanıcı Rol Yönetimi -->
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined header-icon">shield</span> Sistem Kullanıcı Rolleri (Tüm Giriş Yapanlar)</h3>
+                            </div>
+                            <div class="card-body scrollable-y" id="admin-users-roles-list" style="max-height: 350px;">
+                                <!-- JS ile kullanıcı listesi ve roller -->
+                            </div>
+                        </div>
+
+                        <!-- Sistem Durum / Log Paneli -->
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined header-icon">dns</span> Veri Tabanı Durumu</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="status-summary-list">
+                                    <div class="summary-item">
+                                        <span>Aktif Görev Sayısı:</span>
+                                        <strong id="stat-tasks-count">-</strong>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Kayıtlı Personel Sayısı:</span>
+                                        <strong id="stat-personnel-count">-</strong>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Gönderilen Toplam Mesaj:</span>
+                                        <strong id="stat-messages-count">-</strong>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Sistem Güncelleme Sayacı:</span>
+                                        <strong id="stat-counter">-</strong>
+                                    </div>
+                                    <div class="summary-item" style="border-bottom: none; margin-top: 15px; padding-bottom: 0;">
+                                        <button id="btn-admin-export-db" class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+                                            <span class="material-symbols-outlined">download</span>
+                                            Çevrimdışı Veriyi Dışa Aktar (.json)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Şifre Güncelleme -->
+                        <div class="card glass-card">
+                            <div class="card-header">
+                                <h3><span class="material-symbols-outlined header-icon">key</span> Şifre Güncelleme</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="admin-current-password">Mevcut Şifre</label>
+                                    <input type="password" id="admin-current-password" class="styled-input" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="admin-new-password">Yeni Şifre</label>
+                                    <input type="password" id="admin-new-password" class="styled-input" />
+                                </div>
+                                <button id="btn-admin-change-password" class="btn btn-primary">Şifreyi Güncelle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <!-- ================= MODAL PENCERELER (GÖREV EKLE/DÜZENLE & PERSONEL EKLE/DÜZENLE) ================= -->
+
+    <!-- Görev Ekle/Düzenle Modalı -->
+    <div id="task-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="task-modal-title">Yeni Görev Oluştur</h3>
+                <button class="close-modal-btn icon-btn"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="task-modal-id" />
+
+                <!-- 1. OKUMA MODU (DETAY GÖRÜNÜMÜ) -->
+                <div id="task-modal-detail-view" style="display: none;">
+                    <div class="task-detail-header-row" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                        <h2 id="task-detail-title" style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; color: var(--text-primary);"></h2>
+                        <div class="task-detail-badges" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span id="task-detail-priority-badge" class="badge-role" style="display: none !important;"></span>
+                            <span id="task-detail-date-badge" class="badge-role role-viewer" style="display: flex; align-items: center; gap: 4px;"></span>
+                            <span id="task-detail-recurrence-badge" class="badge-role role-editor" style="display: none; align-items: center; gap: 4px;"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section" style="margin-bottom: 20px;">
+                        <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Görev Detayları</h4>
+                        <div style="font-size: 0.9rem; line-height: 1.5; color: var(--text-primary); background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border);">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                                <div><strong style="color: var(--accent-primary);">İlgi Tutulacak EBYS No:</strong> <span id="task-detail-ebys-no">-</span></div>
+                                <div><strong style="color: var(--accent-primary);">Verinin İsteneceği Şube:</strong> <span id="task-detail-source-branch">-</span></div>
+                                <div style="grid-column: span 2;"><strong style="color: var(--accent-primary);">Gönderilecek Yer:</strong> <span id="task-detail-destination">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section task-guide-detail-wrapper" style="margin-bottom: 20px;">
+                        <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                            <span class="material-symbols-outlined" style="font-size: 18px;">description</span> Üst Yazı
+                        </h4>
+                        <div id="task-detail-cover-letter" class="task-guide-box" style="white-space: pre-wrap;"></div>
+                    </div>
+
+                    <div class="modal-footer-actions" style="margin-top: 20px;">
+                        <div></div>
+                        <button class="btn btn-secondary close-modal-action-btn">Kapat</button>
+                    </div>
+                </div>
+
+                <!-- 2. YAZMA/DÜZENLEME MODU (FORM GÖRÜNÜMÜ) -->
+                <div id="task-modal-form-view" style="display: none;">
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <label for="task-title" style="font-size: 0.85rem;">Görev Başlığı *</label>
+                        <input type="text" id="task-title" placeholder="Görevi tanımlayan başlık..." class="styled-input" required />
+                    </div>
+                    
+                    <div class="form-row-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="task-ebys-no" style="font-size: 0.85rem;">İlgi Tutulacak EBYS No</label>
+                            <input type="text" id="task-ebys-no" placeholder="Örn: 123456" class="styled-input" />
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="task-source-branch" style="font-size: 0.85rem;">Verinin İsteneceği Şube</label>
+                            <input type="text" id="task-source-branch" placeholder="Hangi şubeden isteniyor?" class="styled-input" />
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="task-destination" style="font-size: 0.85rem;">Gönderilecek Yer</label>
+                            <input type="text" id="task-destination" placeholder="Nereye gönderilecek?" class="styled-input" />
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="task-recurrence" style="font-size: 0.85rem;">Tekrarlama Sıklığı</label>
+                            <select id="task-recurrence" class="styled-input">
+                                <option value="none" selected>Tek Seferlik</option>
+                                <option value="weekly">Haftalık</option>
+                                <option value="monthly">Aylık</option>
+                                <option value="3_monthly">3 Aylık</option>
+                                <option value="6_monthly">6 Aylık</option>
+                                <option value="yearly">Yıllık</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <label for="task-cover-letter" style="font-size: 0.85rem;">Üst Yazı</label>
+                        <textarea id="task-cover-letter" placeholder="Üst yazı detayı..." class="styled-input" rows="3" style="resize: none; overflow-y: hidden; min-height: 80px;" oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"></textarea>
+                    </div>
+
+                    <div class="form-row-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="task-start-date" style="font-size: 0.85rem;">Başlangıç Tarihi</label>
+                            <input type="date" id="task-start-date" class="styled-input" />
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="task-end-date" style="font-size: 0.85rem;">Bitiş Tarihi</label>
+                            <input type="date" id="task-end-date" class="styled-input" />
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer-actions" style="margin-top: 20px; display: flex; justify-content: space-between;">
+                        <button id="btn-delete-task-modal" class="btn btn-danger" style="display: none;">Görevi Sil</button>
+                        <div style="margin-left: auto; display: flex; gap: 10px;">
+                            <button class="btn btn-secondary close-modal-action-btn">İptal</button>
+                            <button id="btn-save-task-action" class="btn btn-primary">Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ORTAK YORUMLAR BÖLÜMÜ -->
+                <div id="task-comments-section" style="display: none; margin-top: 20px;">
+                    <div class="divider"></div>
+                    <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600;">Görev Yorumları</h4>
+                    <div class="task-comments-list scrollable-y" id="task-comments-list">
+                        <!-- Yorumlar listelenecek -->
+                    </div>
+                    <div class="add-comment-row">
+                        <input type="text" id="input-new-task-comment" placeholder="Yorum yazın..." class="styled-input" />
+                        <button id="btn-send-task-comment" class="btn btn-secondary">Gönder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personel Ekle/Düzenle Modalı -->
+    <div id="personnel-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 id="personnel-modal-title">Yeni Personel Kaydı</h3>
+                <button class="close-modal-btn icon-btn"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="modal-body grid-layout cols-2" style="max-height: 70vh; overflow-y: auto;">
+                <input type="hidden" id="personnel-modal-id" />
+                <div class="form-group span-1">
+                    <label for="p-name">Adı Soyadı *</label>
+                    <input type="text" id="p-name" class="styled-input" required />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-tcno">T.C. Kimlik No</label>
+                    <input type="text" id="p-tcno" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-sicil">Sicil Numarası *</label>
+                    <input type="text" id="p-sicil" class="styled-input" required />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-title">Rütbesi / Unvanı</label>
+                    <input type="text" id="p-title" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-dept">Birim / Şube</label>
+                    <input type="text" id="p-dept" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-kan">Kan Grubu</label>
+                    <input type="text" id="p-kan" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-phone">Cep Telefonu</label>
+                    <input type="text" id="p-phone" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-dahili">Dahili Telefon</label>
+                    <input type="text" id="p-dahili" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-email">E-Posta Adresi</label>
+                    <input type="email" id="p-email" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-tahsili">Tahsili</label>
+                    <input type="text" id="p-tahsili" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-dogumtarihi">Doğum Tarihi</label>
+                    <input type="date" id="p-dogumtarihi" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-dogumyeri">Doğum Yeri</label>
+                    <input type="text" id="p-dogumyeri" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-nufusili">Nüfusa Kayıtlı Olduğu İl</label>
+                    <input type="text" id="p-nufusili" class="styled-input" />
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-medenihali">Medeni Hali</label>
+                    <select id="p-medenihali" class="styled-input">
+                        <option value="">Seçiniz</option>
+                        <option value="Bekar">Bekar</option>
+                        <option value="Evli">Evli</option>
+                        <option value="Boşanmış">Boşanmış</option>
+                        <option value="Dul">Dul</option>
+                    </select>
+                </div>
+                <div class="form-group span-1">
+                    <label for="p-evliliktarihi">Evlilik Tarihi</label>
+                    <input type="date" id="p-evliliktarihi" class="styled-input" />
+                </div>
+                <div class="form-group span-2">
+                    <label for="p-adres">Ev Adresi</label>
+                    <textarea id="p-adres" class="styled-input" rows="2"></textarea>
+                </div>
+                <div class="modal-footer-actions span-2">
+                    <button id="btn-delete-personnel-modal" class="btn btn-danger" style="display: none;">Kaydı Sil</button>
+                    <div>
+                        <button class="btn btn-secondary close-modal-action-btn">İptal</button>
+                        <button id="btn-save-personnel-action" class="btn btn-primary">Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personel Detay Görüntüleme Modalı -->
+    <div id="personnel-view-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card" style="max-width: 720px;">
+            <div class="modal-header">
+                <h3 id="pv-title">Personel Detayı</h3>
+                <button class="close-modal-btn icon-btn" onclick="App.closeAllModals()"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
+                <div class="pv-container">
+                    <!-- Sol Profil Kartı -->
+                    <div class="pv-profile-card">
+                        <div style="position:relative; margin-bottom: 15px;">
+                            <img id="pv-photo" src="" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzUyNTI1YiIgZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg=='" alt="Fotoğraf" class="pv-photo-img">
+                        </div>
+                        <h2 id="pv-name" style="margin:0 0 5px 0; color: var(--text-primary); font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700;"></h2>
+                        <div id="pv-rutbe" style="font-weight:600; color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 8px;"></div>
+                        <img id="pv-rank" src="" onerror="this.style.display='none'" alt="Rütbe" class="pv-rank-img">
+                        <div id="pv-sube" class="pv-sube-badge"></div>
+                    </div>
+
+                    <!-- Sağ Bilgi Paneli -->
+                    <div class="pv-details-pane">
+                        <!-- Grup 1: Görev & İletişim -->
+                        <div>
+                            <h4 style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-primary); margin: 0 0 8px 0; letter-spacing: 0.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                                <span class="material-symbols-outlined" style="font-size: 15px;">contact_phone</span> İletişim & Görev
+                            </h4>
+                            <div class="grid-layout cols-2" style="gap: 8px;">
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Sicil Numarası</strong>
+                                    <span id="pv-sicil" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">T.C. Kimlik No</strong>
+                                    <span id="pv-tcno" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Cep Telefonu</strong>
+                                    <span id="pv-phone" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Dahili Telefon</strong>
+                                    <span id="pv-dahili" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box span-2">
+                                    <strong class="pv-field-label">E-Posta Adresi</strong>
+                                    <span id="pv-email" class="pv-field-value"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grup 2: Kişisel Bilgiler -->
+                        <div>
+                            <h4 style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-primary); margin: 0 0 8px 0; letter-spacing: 0.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                                <span class="material-symbols-outlined" style="font-size: 15px;">person</span> Kişisel Bilgiler
+                            </h4>
+                            <div class="grid-layout cols-2" style="gap: 8px;">
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Kan Grubu</strong>
+                                    <span id="pv-kan" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Tahsili</strong>
+                                    <span id="pv-tahsili" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Doğum Tarihi / Yeri</strong>
+                                    <span id="pv-dogum" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Nüfusa Kayıtlı İl</strong>
+                                    <span id="pv-nufus" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Medeni Hali</strong>
+                                    <span id="pv-medeni" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box">
+                                    <strong class="pv-field-label">Evlilik Tarihi</strong>
+                                    <span id="pv-evlilik" class="pv-field-value"></span>
+                                </div>
+                                <div class="pv-field-box span-2">
+                                    <strong class="pv-field-label">Ev Adresi</strong>
+                                    <span id="pv-adres" class="pv-field-value" style="white-space: normal; line-height: 1.3;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Erişim Kilidi Ekranı (Onay Bekleyenler için) -->
+    <div id="access-lock-overlay" class="modal-overlay" style="display: none; z-index: 99999; background: rgba(10, 15, 30, 0.96); backdrop-filter: blur(20px);">
+        <div class="modal-content glass-card text-center" style="max-width: 450px; padding: 40px 30px; align-items: center;">
+            <span id="lock-icon" class="material-symbols-outlined error-icon" style="font-size: 5rem; color: var(--color-warning); margin-bottom: 20px;">hourglass_empty</span>
+            <h2 id="lock-title" style="margin-bottom: 12px; font-family: var(--font-heading); font-weight: 700;">Giriş İzni Bekleniyor</h2>
+            <p id="lock-message" style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 30px; text-align: center;"></p>
+            
+            <div class="divider" style="width: 100%; margin-bottom: 20px; height: 1px; background: var(--glass-border);"></div>
+            
+            <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 15px; font-weight: 600;">Yönetici Girişi (Kilit Açma)</h4>
+            <div class="login-form" style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
+                <input type="password" id="lock-admin-password" placeholder="Yönetici Şifresi..." class="styled-input" style="text-align: center;" />
+                <button id="lock-admin-login-btn" class="btn btn-primary btn-full">Doğrula ve Kilidi Aç</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tost Bildirim Konteyneri -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Özel Sağ Tık Menüsü -->
+    <div id="custom-context-menu" class="custom-context-menu" style="display: none;">
+        <button id="context-delete-btn" class="context-menu-item delete-item">
+            <span class="material-symbols-outlined">delete</span> Sil
+        </button>
+        <button id="context-task-edit-btn" class="context-menu-item" style="display: none;">
+            <span class="material-symbols-outlined">edit</span> Görevi Düzenle
+        </button>
+        <button id="context-task-delete-btn" class="context-menu-item delete-item" style="display: none;">
+            <span class="material-symbols-outlined">delete_forever</span> Görevi Sil
+        </button>
+    </div>
+
+    <!-- Yönetici Onay Popup Konteyneri -->
+    <div id="approval-popup-container" class="approval-popup-container"></div>
+
+    <!-- Custom Onay Dialoğu -->
+    <div id="confirm-dialog-container"></div>
+
+    <!-- Büyük Mesaj Bildirimi Modalı -->
+    <div id="message-alert-overlay" class="modal-overlay" style="display: none; z-index: 99999; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+        <div class="confirm-dialog" style="max-width: 420px; text-align: center; border-left: 4px solid var(--accent-primary);">
+            <span class="material-symbols-outlined" style="font-size: 3.5rem; color: var(--accent-primary); margin-bottom: 15px; display: block; animation: bellShake 0.6s ease-in-out infinite alternate;">forum</span>
+            <h3 style="font-size: 1.25rem; margin-bottom: 8px; font-family: var(--font-heading); font-weight: 700; color: var(--text-primary);">Yeni Bir Mesajınız Var!</h3>
+            <p id="msg-alert-preview" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; background: rgba(255,255,255,0.03); padding: 12px; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border); text-align: left;"></p>
+            <div class="confirm-dialog-actions" style="display: flex; gap: 10px; justify-content: center;">
+                <button id="btn-msg-alert-close" class="btn btn-secondary" style="min-width: 100px;">Kapat</button>
+                <button id="btn-msg-alert-go" class="btn btn-primary" style="min-width: 140px;">Sohbete Git</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Dosyaları -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/client.js?v=8"></script>
+    <script src="js/kanban.js?v=8"></script>
+    <script src="js/app.js?v=8"></script>
+</body>
+</html>
