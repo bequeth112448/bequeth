@@ -1,7 +1,10 @@
 {
+  "isAppActive": false,
+  "inactiveMessage": "Sunucularımızda bakım çalışması yapılmaktadır, lütfen daha sonra tekrar deneyiniz."
+
+  "isForceUpdate": false,
   "versionCode": 102,
   "versionName": "1.1.0",
   "apkUrl": "***.apk",
-  "isForceUpdate": false,
   "updateNotes": "Hata düzeltmeleri ve performans iyileştirmeleri yapıldı."
 }
