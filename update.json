@@ -2,7 +2,7 @@
   "versionName": "1.0.0",
   "isForceUpdate": false,
   "updateNotes": "Hata düzeltmeleri ve performans iyileştirmeleri yapıldı.",
-  "isAppActive": true,
+  "isAppActive": false,
   "inactiveMessage": "Uygulama bakıma alınmıştır."
 }
 
